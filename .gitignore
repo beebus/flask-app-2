@@ -17,6 +17,7 @@ eggs/
 lib/
 lib64/
 parts/
+bin/
 sdist/
 var/
 wheels/
@@ -50,6 +51,14 @@ coverage.xml
 # Translations
 *.mo
 *.pot
+
+# Mr Developer
+.mr.developer.cfg
+.project
+.pydevproject
+
+# SQLite databases
+*.sqlite
 
 # Django stuff:
 *.log
