@@ -8,11 +8,22 @@ from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
 
 basedir = os.path.abspath(os.path.dirname(__file__))
+# print(basedir)
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'hard to guess string'
+
+# Unix SQLite configuration:
+# app.config['SQLALCHEMY_DATABASE_URI'] =\
+#    'sqlite:////' + os.path.join(basedir, 'data.sqlite')
+
+# Windows SQLite configuration:
+# app.config['SQLALCHEMY_DATABASE_URI'] =\
+#    'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+# print('sqlite:///' + os.path.join(basedir, 'data.sqlite'))
 app.config['SQLALCHEMY_DATABASE_URI'] =\
-    'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+    'sqlite:///G:/LinkedIn_Learning/Python/Learning Flask/flask-app-2/data.sqlite'
+app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 bootstrap = Bootstrap(app)

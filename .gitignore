@@ -58,7 +58,7 @@ coverage.xml
 .pydevproject
 
 # SQLite databases
-*.sqlite
+# *.sqlite
 
 # Django stuff:
 *.log
