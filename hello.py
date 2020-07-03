@@ -1,4 +1,3 @@
-import os
 from flask import Flask, render_template, session, redirect, url_for
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
@@ -6,9 +5,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
-
-# basedir = os.path.abspath(os.path.dirname(__file__))
-# print(basedir)
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'hard to guess string'
@@ -21,7 +18,7 @@ app.config['SECRET_KEY'] = 'hard to guess string'
 # app.config['SQLALCHEMY_DATABASE_URI'] =\
 #    'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 # print('sqlite:///' + os.path.join(basedir, 'data.sqlite'))
-app.config['SQLALCHEMY_DATABASE_URI'] =\
+app.config['SQLALCHEMY_DATABASE_URI'] = \
     'sqlite:///G:/LinkedIn_Learning/Python/Learning Flask/flask-app-2/data.sqlite'
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -29,6 +26,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 bootstrap = Bootstrap(app)
 moment = Moment(app)
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 
 class Role(db.Model):
