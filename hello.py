@@ -1,4 +1,5 @@
 import os
+# from threading import Thread
 from flask import Flask, render_template, session, redirect, url_for
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
@@ -9,12 +10,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_mail import Mail, Message
 
-basedir = os.path.abspath(os.path.dirname(__file__))
-print(basedir)
-basedir2 = basedir.replace("\\", "/")
-print(basedir2)
-uri_str = 'sqlite:///' + basedir2 + '/data.sqlite'
-print(uri_str)
+basedir = os.path.abspath(os.path.dirname(__file__)).replace("\\", "/")
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'hard to guess string'
@@ -25,22 +21,23 @@ app.config['SECRET_KEY'] = 'hard to guess string'
 
 # Windows SQLite configuration:
 app.config['SQLALCHEMY_DATABASE_URI'] =\
-    'sqlite:///' + basedir2 + '/data.sqlite'
+    'sqlite:///' + basedir + '/data.sqlite'
 
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Gmail configuration:
-# must run first in cmd:
+# must run first in cmd OR edit the configurations for the PyCharm project to include these environment variables:
+# > set FLASK_APP=hello
 # > set MAIL_USERNAME=<Gmail username> (before the @gmail.com)
 # > set MAIL_PASSWORD=<Gmail password>
+# > set FLASKY_ADMIN=<Gmail username>
 # Sometimes, you'll need to setup an "App Password" for GMail: https://myaccount.google.com/apppasswords
 app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
 app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
-
 app.config['FLASKY_MAIL_SUBJECT_PREFIX'] = '[Flasky]'
 app.config['FLASKY_MAIL_SENDER'] = 'Flasky Admin <flasky@example.com>'
 app.config['FLASKY_ADMIN'] = os.environ.get('FLASKY_ADMIN')
@@ -77,12 +74,20 @@ class NameForm(FlaskForm):
     submit = SubmitField('Submit')
 
 
+def send_async_email(appl, msg):
+    with appl.app_context():
+        mail.send(msg)
+
+
 def send_email(to, subject, template, **kwargs):
     msg = Message(app.config['FLASKY_MAIL_SUBJECT_PREFIX'] + ' ' + subject,
                   sender=app.config['FLASKY_MAIL_SENDER'], recipients=[to])
     msg.body = render_template(template + '.txt', **kwargs)
     msg.html = render_template(template + '.html', **kwargs)
     mail.send(msg)
+    # thr = Thread(target=send_async_email, args=[app, msg])
+    # thr.start()
+    # return thr
 
 
 @app.errorhandler(404)
