@@ -27,7 +27,8 @@ app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Gmail configuration:
-# must run first in cmd OR edit the configurations for the PyCharm project to include these environment variables:
+# must run first in cmd/terminal OR edit the configurations for the PyCharm project to include these environment
+# variables:
 # > set FLASK_APP=hello
 # > set MAIL_USERNAME=<Gmail username> (before the @gmail.com)
 # > set MAIL_PASSWORD=<Gmail password>
